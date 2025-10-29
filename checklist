@@ -1,0 +1,92 @@
+📝 Checklist del proyecto Philosophers
+1️⃣ Preparación inicial
+
+X Crear carpeta philo/ y abrirla en tu editor.
+
+X Crear Makefile básico (compilación de todos los .c en objs/ y creación del binario philo).
+
+X Crear philo.h con:
+
+XIncludes necesarios (stdlib.h, unistd.h, stdio.h, pthread.h, sys/time.h).
+
+XPrototipos de funciones.
+
+Definición de estructuras t_data y t_philo.
+
+2️⃣ Recepción y validación de argumentos
+
+ Implementar parse_args.c.
+
+ Comprobar número de argumentos (4 o 5).
+
+ Comprobar que todos son números positivos.
+
+ Guardar valores en t_data.
+
+ Probar con entradas válidas e inválidas.
+
+3️⃣ Inicialización de estructuras y mutex
+
+ Crear estructura t_philo:
+
+ID del filósofo.
+
+Puntero a t_data.
+
+Contador de veces que ha comido.
+
+Mutex de tenedor.
+
+ Inicializar mutex de cada tenedor.
+
+ Inicializar mutex para print / control de datos compartidos.
+
+ Inicializar array de filósofos (t_philo[]) con datos correctos.
+
+4️⃣ Funciones auxiliares (utils.c)
+
+ ft_atoi para convertir strings a int.
+
+ is_digit para validar números positivos.
+
+ Función para obtener tiempo actual (get_time_ms).
+
+ Función de print segura (con mutex) para log de acciones.
+
+5️⃣ Rutina de cada filósofo (routine.c)
+
+ Crear función que será ejecutada por cada hilo.
+
+ Implementar ciclo: pensar → tomar tenedores → comer → soltar tenedores → dormir.
+
+ Actualizar contador de veces que ha comido.
+
+ Marcar el tiempo de la última comida.
+
+6️⃣ Hilos y sincronización
+
+ Crear hilos con pthread_create.
+
+ Asegurar que todos los hilos usan correctamente los mutex.
+
+ Implementar pthread_join para esperar que todos los hilos terminen.
+
+ Prevenir deadlocks usando estrategia de “filósofos pares/impresos primero” u otra que se indique en el subject.
+
+7️⃣ Monitor / control de muerte
+
+ Crear función que verifica si algún filósofo ha muerto (sin comer a tiempo).
+
+ Usar mutex para leer el estado de cada filósofo de forma segura.
+
+ Detener la simulación correctamente si alguien muere o todos han comido suficientes veces.
+
+8️⃣ Pruebas finales
+
+ Probar casos límite: 1 filósofo, 2 filósofos, 200 filósofos.
+
+ Probar con y sin número de comidas límite.
+
+ Revisar que no haya memory leaks (valgrind).
+
+ Revisar que no haya errores de compilación ni warnings.
