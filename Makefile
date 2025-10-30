@@ -6,7 +6,7 @@
 #    By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/29 19:18:03 by acarbajo          #+#    #+#              #
-#    Updated: 2025/10/29 19:21:04 by acarbajo         ###   ########.fr        #
+#    Updated: 2025/10/30 17:32:38 by acarbajo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,10 +18,9 @@ CFLAGS = -Wall -Wextra -Werror
 
 OBJDIR = objs
 
-SRCS = main.c \
+SRC = main.c 
 
-
-OBJFILES = $(addprefix $(OBJDIR)/, $(SRCS:.c=.o))
+OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
 all: $(OBJDIR) $(NAME)
 
@@ -32,8 +31,8 @@ $(OBJDIR):
 $(OBJDIR)/%.o: %.c philo.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-$(NAME): $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 clean:
 	rm -rf $(OBJDIR)
 
