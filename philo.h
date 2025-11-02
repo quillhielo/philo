@@ -19,7 +19,7 @@
 # include <stdlib.h> // malloc, free
 # include <unistd.h> // write, usleep
 # include <sys/time.h> // gettimeofday
-# include <pthread.h> // pthread_create, pthread_detach, pthread_join,  pthread_mutex_init, destroy, mutex_lock, mutex_unloock
+# include <pthread.h> // pthread_create, pthread_detach, pthread_join,  pthread_mutex_init, destroy, mutex_lock, mutex_unlock
 # include <limits.h> // min_int, max_int
 
 typedef struct s_data
@@ -34,7 +34,19 @@ typedef struct s_data
 typedef	struct s_philo
 {
 	int	id;
+	int	has_eaten;
+	t_data	*data;
 } t_philo;
+
+int	is_digit(char *str);
+int	atoi_result_checker(long r, long s);
+int	ascii_to_int(const char *str);
+int	fill_data(t_data *data, int n, int count);
+int	parser_argv(char **argv, t_data *data);
+t_philo *fill_philos(t_data *data, int id);
+t_philo **philo_init(t_data *data);
+
+
 
 
 
