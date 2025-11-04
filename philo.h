@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/10/30 17:32:16 by acarbajo         ###   ########.fr       */
+/*   Updated: 2025/11/04 20:04:22 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,20 @@ typedef struct s_data
 	int	must_eat;
 }	t_data;
 
+typedef	struct s_table
+{
+	int	n_philos;
+	pthread_mutex_t	*fork;
+} t_table;
+
 typedef	struct s_philo
 {
 	int	id;
 	int	has_eaten;
+	t_table	*table;
+	pthread_t	thread;
+	int	left_fork;
+	int	right_fork;
 	t_data	*data;
 } t_philo;
 
@@ -43,8 +53,10 @@ int	atoi_result_checker(long r, long s);
 int	ascii_to_int(const char *str);
 int	fill_data(t_data *data, int n, int count);
 int	parser_argv(char **argv, t_data *data);
-t_philo *fill_philos(t_data *data, int id);
-t_philo **philo_init(t_data *data);
+t_philo fill_philos(t_table *table, int id, t_data *data);
+void *routine(void *arg);
+t_philo *philo_init(t_data *data, t_table *table);
+void	print_log(t_philo *philo, char *str);
 
 
 

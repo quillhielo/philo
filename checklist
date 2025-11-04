@@ -90,3 +90,8 @@ Mutex de tenedor.
  Revisar que no haya memory leaks (valgrind).
 
  Revisar que no haya errores de compilación ni warnings.
+
+
+ -Cada filósofo (hilo) tiene un puntero a la mesa,
+-la mesa contiene todos los mutex (tenedores),
+-y los mutex controlan el acceso compartido.
