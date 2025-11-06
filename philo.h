@@ -24,17 +24,20 @@
 
 typedef struct s_data
 {
-	int	n_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	must_eat;
+	long	n_philos;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	must_eat;
 }	t_data;
 
 typedef	struct s_table
 {
-	int	n_philos;
+	long	n_philos;
+	int	dead;
+	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	*fork;
+	long	start_time;
 } t_table;
 
 typedef	struct s_philo
@@ -45,6 +48,8 @@ typedef	struct s_philo
 	pthread_t	thread;
 	int	left_fork;
 	int	right_fork;
+	long	last_meal;
+	pthread_mutex_t	meal_mutex;
 	t_data	*data;
 } t_philo;
 

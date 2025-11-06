@@ -74,9 +74,21 @@ void	create_threads(t_philo *philos)
 	int	i;
 
 	i = 0;
+	philos->table->start_time = get_time_stamp();
 	while (i < philos->data->n_philos)
 	{
 		pthread_create(&philos[i].thread, NULL, routine, &philos[i]);
+		i++;
+	}
+}
+
+void	join_threads(t_philo *philos)
+{
+	int	i;
+
+	i = 0;
+	while (i < philos->data->n_philos)
+	{
 		pthread_join(philos[i].thread, NULL);
 		i++;
 	}
@@ -101,6 +113,7 @@ int	main(int argc, char **argv)
 	table = table_init(data);
 	philos = philo_init(data, table);
 	create_threads(philos);
+	join_threads(philos);
 	//print_data(data);
 	//print_philos(philos, data);
 
