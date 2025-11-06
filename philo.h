@@ -62,6 +62,7 @@ t_philo fill_philos(t_table *table, int id, t_data *data);
 void *routine(void *arg);
 t_philo *philo_init(t_data *data, t_table *table);
 void	print_log(t_philo *philo, char *str);
+int	get_time_stamp();
 
 
 
