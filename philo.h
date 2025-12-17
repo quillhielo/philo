@@ -6,13 +6,12 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/11/04 20:04:22 by acarbajo         ###   ########.fr       */
+/*   Updated: 2025/12/17 20:45:54 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
-
 
 # include <string.h> //memset
 # include <stdio.h> // printf 
@@ -24,42 +23,53 @@
 
 typedef struct s_data
 {
-	int	n_philos;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	must_eat;
+	long	n_philos;
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	must_eat;
 }	t_data;
 
-typedef	struct s_table
+typedef struct s_table
 {
-	int	n_philos;
+	long			n_philos;
+	int				dead;
+	pthread_t		monitor_thread;
+	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	meal_mutex;
 	pthread_mutex_t	*fork;
-} t_table;
+	long			start_time;
+}	t_table;
 
-typedef	struct s_philo
+typedef struct s_philo
 {
-	int	id;
-	int	has_eaten;
-	t_table	*table;
+	int			id;
+	int			has_eaten;
+	t_table		*table;
 	pthread_t	thread;
-	int	left_fork;
-	int	right_fork;
-	t_data	*data;
-} t_philo;
+	int			left_fork;
+	int			right_fork;
+	long		last_meal;
+	t_data		*data;
+}	t_philo;
 
-int	is_digit(char *str);
-int	atoi_result_checker(long r, long s);
-int	ascii_to_int(const char *str);
-int	fill_data(t_data *data, int n, int count);
-int	parser_argv(char **argv, t_data *data);
-t_philo fill_philos(t_table *table, int id, t_data *data);
-void *routine(void *arg);
-t_philo *philo_init(t_data *data, t_table *table);
+int		is_digit(char *str);
+int		atlong(const char *str);
+int		fill_data(t_data *data, int n, int count);
+int		parser_argv(char **argv, t_data *data);
+t_philo	fill_philos(t_table *table, int id, t_data *data);
+int		eat(t_philo *philo);
+void	*routine(void *arg);
+void	*monitoring(void *arg);
+t_table	*table_init(t_data *data);
+t_philo	*philo_init(t_data *data, t_table *table);
 void	print_log(t_philo *philo, char *str);
-
-
-
-
+int		get_time_stamp(void);
+int		is_dead(t_philo *philo);
+void	create_threads(t_philo *philos);
+void	join_threads(t_philo *philos);
+int		clean_data(t_data *data);
+int		clean_table(t_table *table);
 
 #endif

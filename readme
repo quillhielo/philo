@@ -1,0 +1,16 @@
+
+| **Deadlock**             
+| Todos esperan eternamente un recurso bloqueado 
+| Romper la simetría (orden diferente o límites de tiempo) 
+|
+| **Condición de carrera** 
+| Dos hilos acceden al mismo dato a la vez       
+| Proteger con mutex o variables atómicas                  
+|
+| **Mutex**                
+| Llave para entrar en una sección crítica       
+| Asegura acceso exclusivo                                 
+|
+| **Hilo**                 
+| Tarea independiente que comparte memoria       
+| Permite paralelismo y sincronización                     |
