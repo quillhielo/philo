@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:53:42 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/17 21:55:45 by acarbajo         ###   ########.fr       */
+/*   Updated: 2025/12/22 17:21:10 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,12 @@
 
 int	eat(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-		pthread_mutex_lock(&philo->table->fork[philo->right_fork]);
-	if (philo->id % 2 != 0)
-		pthread_mutex_lock(&philo->table->fork[philo->left_fork]);
+	pthread_mutex_lock(&philo->table->fork[philo->right_fork]);
+	
 	print_log(philo, "has taken a fork");
 	if (is_dead(philo))
 		return (0);
-	if (philo->id % 2 == 0)
-		pthread_mutex_lock(&philo->table->fork[philo->left_fork]);
-	if (philo->id % 2 != 0)
-		pthread_mutex_lock(&philo->table->fork[philo->right_fork]);
+	pthread_mutex_lock(&philo->table->fork[philo->left_fork]);
 	pthread_mutex_lock(&philo->table->meal_mutex);
 	philo->last_meal = get_time_stamp();
 	pthread_mutex_unlock(&philo->table->meal_mutex);
@@ -36,24 +31,34 @@ int	eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->table->fork[philo->right_fork]);
 	return (1);
 }
+void	active_sleep(long	duration_ms,t_philo *philo)
+{
+	long	ms_init;
+	
+	ms_init = get_time_stamp();
+	while (!is_dead(philo) && get_time_stamp() - ms_init < duration_ms)
+		usleep(500);
+}
 
 void	*routine(void *arg)
 {
-	t_philo	*philo;
+	t_philo *philo;
 
 	philo = (t_philo *)arg;
+	while (!philo->table->full_table)
+		usleep(500);
 	philo->last_meal = philo->table->start_time;
-	while (philo->table->dead == 0)
+	if (philo->id % 2 == 0)
+			usleep(2000);
+	while (!is_dead(philo))
 	{
-		if (is_dead(philo))
-			break ;
 		print_log(philo, "is thinking");
 		if (is_dead(philo))
-			break ;
+			return (0);		
 		if (!eat(philo))
 			break ;
 		print_log(philo, "is sleeping");
-		usleep(philo->data->time_to_sleep * 1000);
+		active_sleep(philo->data->time_to_sleep, philo);
 	}
-	return (philo);
+	return (NULL);
 }

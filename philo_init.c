@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 20:46:50 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/17 20:47:44 by acarbajo         ###   ########.fr       */
+/*   Updated: 2025/12/22 17:33:01 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_table	*table_init(t_data *data)
 		i++;
 	}
 	table->dead = 0;
+	table->full_table = 0;
 	pthread_mutex_init(&table->death_mutex, NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
 	pthread_mutex_init(&table->meal_mutex, NULL);
@@ -69,7 +70,6 @@ void	*monitoring(void *arg)
 {
 	t_philo	*philos;
 	int		i;
-	int		time_now;
 
 	philos = (t_philo *)arg;
 	while (1)
@@ -77,21 +77,9 @@ void	*monitoring(void *arg)
 		i = 0;
 		while (i < philos->data->n_philos)
 		{
-			pthread_mutex_lock(&philos[i].table->death_mutex);
-			time_now = get_time_stamp();
-			if (philos[i].table->dead == 1)
-			{
-				pthread_mutex_unlock(&philos[i].table->death_mutex);
+			if (is_dead(&philos[i]))
 				return (NULL);
-			}
-			if (time_now - philos[i].last_meal >= philos->data->time_to_die)
-			{
-				philos[i].table->dead = 1;
-				print_log(&philos[i], "died");
-				pthread_mutex_unlock(&philos[i].table->death_mutex);
-				return (NULL);
-			}
-			pthread_mutex_unlock(&philos[i].table->death_mutex);
+			
 			i++;
 		}
 		usleep(500);

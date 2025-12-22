@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:04:14 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/17 20:34:11 by acarbajo         ###   ########.fr       */
+/*   Updated: 2025/12/22 17:31:29 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,30 @@
 int	is_dead(t_philo *philo)
 {
 	int	state;
+	long	current_ms;
 
 	pthread_mutex_lock(&philo->table->death_mutex);
+	pthread_mutex_lock(&philo->table->meal_mutex);
+	current_ms = get_time_stamp() - philo->last_meal;
+	if (current_ms >= philo->data->time_to_die)
+	{
+		philo->table->dead = 1;
+		pthread_mutex_unlock(&philo->table->death_mutex);
+		pthread_mutex_unlock(&philo->table->meal_mutex);
+		pthread_mutex_lock(&philo->table->print_mutex);
+		printf("%li %i died\n", current_ms, philo->id);
+		pthread_mutex_unlock(&philo->table->print_mutex);
+		return (1);
+	}
 	state = philo->table->dead;
 	pthread_mutex_unlock(&philo->table->death_mutex);
+	pthread_mutex_unlock(&philo->table->meal_mutex);
 	return (state);
 }
 
-int	get_time_stamp(void)
+long	get_time_stamp(void)
 {
-	int				ms;
+	long			ms;
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
@@ -35,7 +49,9 @@ int	get_time_stamp(void)
 void	print_log(t_philo *philo, char *str)
 {
 	int	ms;
-
+	
+	if(is_dead(philo))
+		return;
 	pthread_mutex_lock(&philo->table->print_mutex);
 	ms = (get_time_stamp()) - (philo->table->start_time);
 	printf("%i %i %s\n", ms, philo->id, str);
@@ -47,14 +63,14 @@ void	create_threads(t_philo *philos)
 	int	i;
 
 	i = 0;
-	philos->table->start_time = get_time_stamp();
-	printf("%li\n", philos->table->start_time);
 	while (i < philos->data->n_philos)
 	{
 		pthread_create(&philos[i].thread, NULL, routine, &philos[i]);
 		i++;
 	}
 	pthread_create(&philos->table->monitor_thread, NULL, monitoring, philos);
+	philos->table->start_time = get_time_stamp();
+	philos->table->full_table = 1;
 }
 
 void	join_threads(t_philo *philos)

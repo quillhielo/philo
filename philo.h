@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/17 20:45:54 by acarbajo         ###   ########.fr       */
+/*   Updated: 2025/12/22 14:35:04 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_table
 {
 	long			n_philos;
 	int				dead;
+	int				full_table;
 	pthread_t		monitor_thread;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
@@ -65,7 +66,8 @@ void	*monitoring(void *arg);
 t_table	*table_init(t_data *data);
 t_philo	*philo_init(t_data *data, t_table *table);
 void	print_log(t_philo *philo, char *str);
-int		get_time_stamp(void);
+long	get_time_stamp(void);
+void	active_sleep(long	duration_ms,t_philo *philo);
 int		is_dead(t_philo *philo);
 void	create_threads(t_philo *philos);
 void	join_threads(t_philo *philos);
