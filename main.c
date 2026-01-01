@@ -23,7 +23,7 @@ int	main(int argc, char **argv)
 	data = malloc(sizeof(t_data));
 	if (!data)
 		return (0);
-	if (!parser_argv(argv, data))
+	if (parser_argv(argv, data) == -1)
 		return (clean_data(data));
 	table = table_init(data);
 	if (!table)

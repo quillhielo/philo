@@ -56,7 +56,7 @@ typedef struct s_philo
 }	t_philo;
 
 int		is_digit(char *str);
-int		atlong(const char *str);
+long	atlong(const char *str);
 int		fill_data(t_data *data, int n, int count);
 int		parser_argv(char **argv, t_data *data);
 t_philo	fill_philos(t_table *table, int id, t_data *data);

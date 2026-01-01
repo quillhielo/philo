@@ -12,6 +12,9 @@
 
 #include "philo.h"
 
+	pthread_t		monitor_thread;
+	long			start_time;
+
 t_table	*table_init(t_data *data)
 {
 	t_table	*table;
