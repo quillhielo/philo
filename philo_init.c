@@ -12,9 +12,6 @@
 
 #include "philo.h"
 
-	pthread_t		monitor_thread;
-	long			start_time;
-
 t_table	*table_init(t_data *data)
 {
 	t_table	*table;
@@ -32,10 +29,12 @@ t_table	*table_init(t_data *data)
 		i++;
 	}
 	table->dead = 0;
+	table->all_ate = 0;
 	table->full_table = 0;
 	pthread_mutex_init(&table->death_mutex, NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
 	pthread_mutex_init(&table->meal_mutex, NULL);
+	table->start_time = get_time_stamp();
 	return (table);
 }
 
@@ -49,6 +48,9 @@ t_philo	fill_philos(t_table *table, int id, t_data *data)
 	philo.thread = 0;
 	philo.left_fork = id;
 	philo.right_fork = (id + 1) % data->n_philos;
+	philo.has_eaten = 0;
+	philo.last_meal = table->start_time;
+	philo.meals_eaten = 0;
 	return (philo);
 }
 
@@ -69,22 +71,4 @@ t_philo	*philo_init(t_data *data, t_table *table)
 	return (philos);
 }
 
-void	*monitoring(void *arg)
-{
-	t_philo	*philos;
-	int		i;
 
-	philos = (t_philo *)arg;
-	while (1)
-	{
-		i = 0;
-		while (i < philos->data->n_philos)
-		{
-			if (is_dead(&philos[i]))
-				return (NULL);
-			
-			i++;
-		}
-		usleep(500);
-	}
-}

@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 OBJDIR = objs
 
-SRC = main.c philo_parser.c philo_init.c philo_utils.c philo_utils_exit.c philo_routine.c
+SRC = main.c philo_parser.c philo_init.c philo_utils.c philo_utils_exit.c philo_routine.c philo_monitoring.c
 
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 

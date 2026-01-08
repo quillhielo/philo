@@ -34,6 +34,7 @@ typedef struct s_table
 {
 	long			n_philos;
 	int				dead;
+	int				all_ate;
 	int				full_table;
 	pthread_t		monitor_thread;
 	pthread_mutex_t	death_mutex;
@@ -52,6 +53,7 @@ typedef struct s_philo
 	int			left_fork;
 	int			right_fork;
 	long		last_meal;
+	long		meals_eaten;
 	t_data		*data;
 }	t_philo;
 
@@ -73,5 +75,8 @@ void	create_threads(t_philo *philos);
 void	join_threads(t_philo *philos);
 int		clean_data(t_data *data);
 int		clean_table(t_table *table);
+int		clean_philos(t_philo *philos);
+int		clean_all(t_data *data, t_table *table, t_philo *philos);
+int 	death_monitoring(t_philo *philo);
 
 #endif

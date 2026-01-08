@@ -37,4 +37,28 @@ int	clean_table(t_table *table)
 	free(table);
 	return (0);
 }
+int	clean_philos(t_philo *philos)
+{
+	if (philos->table)
+		clean_table(philos->table);
+	if (philos->data)
+		clean_data(philos->data);
+	free(philos);
+	return (0);
+}
+int	clean_all(t_data *data, t_table *table, t_philo *philos)
+{
+	if (philos)
+	{
+		clean_philos(philos);
+	}
+	else
+	{
+		if (table)
+			clean_table(table);
+		if (data)
+			clean_data(data);
+	}
+	return (0);
+}
 

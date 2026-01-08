@@ -12,29 +12,7 @@
 
 #include "philo.h"
 
-int	is_dead(t_philo *philo)
-{
-	int	state;
-	long	current_ms;
 
-	pthread_mutex_lock(&philo->table->death_mutex);
-	pthread_mutex_lock(&philo->table->meal_mutex);
-	current_ms = get_time_stamp() - philo->last_meal;
-	if (current_ms >= philo->data->time_to_die)
-	{
-		philo->table->dead = 1;
-		pthread_mutex_unlock(&philo->table->death_mutex);
-		pthread_mutex_unlock(&philo->table->meal_mutex);
-		pthread_mutex_lock(&philo->table->print_mutex);
-		printf("%li %i died\n", current_ms, philo->id);
-		pthread_mutex_unlock(&philo->table->print_mutex);
-		return (1);
-	}
-	state = philo->table->dead;
-	pthread_mutex_unlock(&philo->table->death_mutex);
-	pthread_mutex_unlock(&philo->table->meal_mutex);
-	return (state);
-}
 
 long	get_time_stamp(void)
 {

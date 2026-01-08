@@ -24,15 +24,14 @@ int	main(int argc, char **argv)
 	if (!data)
 		return (0);
 	if (parser_argv(argv, data) == -1)
-		return (clean_data(data));
+		return (clean_all(data, NULL, NULL));
 	table = table_init(data);
 	if (!table)
-		return (clean_data(data));
+		return (clean_all(data, table, NULL));
 	philos = philo_init(data, table);
 	create_threads(philos);
-	monitoring(philos);
 	join_threads(philos);
-	clean_table(table);
+	clean_all(data, table, philos);
 	return (0);
 }
 

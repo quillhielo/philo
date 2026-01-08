@@ -72,7 +72,7 @@ int	parser_argv(char **argv, t_data *data)
 	int	i;
 	int	n;
 
-	data->must_eat = -1;
+	data->must_eat = 0;
 	i = 1;
 	while (argv[i])
 	{

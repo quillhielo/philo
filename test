@@ -1,0 +1,51 @@
+# 1. Número de filósofos:
+./philo 1
+# Esperado: Error o mensaje indicando que no puede haber solo un filósofo (mínimo 2 filósofos).
+
+./philo 2
+# Esperado: Deadlock. Los dos filósofos intentan comer pero se bloquean porque necesitan el mismo tenedor.
+
+./philo 5
+# Esperado: Funcionará correctamente, los filósofos deben alternar entre pensar y comer sin deadlock.
+
+# 2. Tiempos de acción (pensar, comer, dormir):
+./philo 5 100 200 100
+# Esperado: Los filósofos piensan durante 100 ms, comen durante 200 ms, y duermen 100 ms. El ciclo de acción debe ser visible, pero sin deadlocks.
+
+./philo 5 50 150 200
+# Esperado: Los filósofos alternan entre pensar (50 ms), comer (150 ms), y dormir (200 ms). No debe haber conflictos en los tiempos de ejecución.
+
+# 3. Muerte por hambre:
+./philo 5 200 500 1000
+# Esperado: El filósofo que no puede obtener el tenedor debe morir de hambre tras 500 ms de espera.
+
+./philo 5 500 500 2000
+# Esperado: Un filósofo puede morir de hambre si el tiempo de vida es menor al tiempo que tarda en conseguir comida.
+
+# 4. Deadlock:
+./philo 5 50 1000 1000
+# Esperado: Deadlock, ya que los filósofos tardan mucho en comer y podrían bloquearse entre sí.
+
+./philo 5 100 500 500
+# Esperado: Sin deadlock. Los filósofos deben poder comer y pensar sin bloquearse, debido a tiempos bien distribuidos.
+
+# 5. Aumento de filósofos (verificar escalabilidad):
+./philo 10 50 100 100
+# Esperado: El sistema debe manejar 10 filósofos sin caídas ni deadlocks. Los filósofos deben seguir interactuando correctamente.
+
+./philo 100 50 100 100
+# Esperado: El programa debe soportar 100 filósofos, aunque puede haber pequeñas demoras en la salida por la cantidad de hilos.
+
+# 6. Filósofos que nunca comen:
+./philo 5 50 0 1000
+# Esperado: Los filósofos que no comen (tiempo de comer `0`) deben seguir pensando, pero no interactúan con los tenedores.
+
+# 7. Muerte por espera excesiva:
+./philo 5 50 500 2000
+# Esperado: El filósofo que no consiga los tenedores para comer debe morir después de 2000 ms de espera.
+
+# 8. Salida de la simulación:
+./philo 5 100 500 1000
+# Esperado: Al finalizar la simulación, la salida debe indicar si hubo alguna muerte por hambre o si todo se completó correctamente. Ejemplo:
+# "Philosopher [ID] died"
+# "Simulation completed successfully."
