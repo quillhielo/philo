@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 20:50:45 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/17 20:51:28 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:29:47 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	is_digit(char *str)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	if (!str[i])
 		return (-1);
 	if (str[i] == '+')
@@ -31,10 +32,12 @@ int	is_digit(char *str)
 
 long	atlong(const char *str)
 {
-	size_t	i = 0;
-	long	r = 0;
+	size_t	i;
+	long	r;
 	long	d;
 
+	i = 0;
+	r = 0;
 	if (str[i] == '+')
 		i++;
 	if (!(str[i] >= '0' && str[i] <= '9'))
@@ -42,7 +45,7 @@ long	atlong(const char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		d = str[i] - '0';
-		if (r > (LONG_MAX - d) / 10) 
+		if (r > (LONG_MAX - d) / 10)
 			return (-1);
 		r = r * 10 + d;
 		i++;
@@ -82,10 +85,9 @@ int	parser_argv(char **argv, t_data *data)
 		if (n == -1)
 			return (-1);
 		fill_data(data, n, i);
-		if ((i == 1 && data->n_philos <= 0) ||
-		    (i == 2 && data->time_to_die <= 0) ||
-		    (i == 3 && data->time_to_eat <= 0) ||
-		    (i == 4 && data->time_to_sleep <= 0))
+		if ((i == 1 && data->n_philos <= 0) || (i == 2
+				&& data->time_to_die <= 0) || (i == 3 && data->time_to_eat <= 0)
+			|| (i == 4 && data->time_to_sleep <= 0))
 			return (-1);
 		i++;
 	}

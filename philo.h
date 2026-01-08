@@ -6,20 +6,20 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/22 14:35:04 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/08 17:15:04 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include <string.h> //memset
-# include <stdio.h> // printf 
-# include <stdlib.h> // malloc, free
-# include <unistd.h> // write, usleep
-# include <sys/time.h> // gettimeofday
-# include <pthread.h> // pthread_create, pthread_detach, pthread_join,  pthread_mutex_init, destroy, mutex_lock, mutex_unlock
-# include <limits.h> // min_int, max_int
+# include <string.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
+# include <pthread.h>
+# include <limits.h>
 
 typedef struct s_data
 {
@@ -69,7 +69,7 @@ t_table	*table_init(t_data *data);
 t_philo	*philo_init(t_data *data, t_table *table);
 void	print_log(t_philo *philo, char *str);
 long	get_time_stamp(void);
-void	active_sleep(long	duration_ms,t_philo *philo);
+void	active_sleep(long duration_ms, t_philo *philo);
 int		is_dead(t_philo *philo);
 void	create_threads(t_philo *philos);
 void	join_threads(t_philo *philos);
@@ -77,6 +77,8 @@ int		clean_data(t_data *data);
 int		clean_table(t_table *table);
 int		clean_philos(t_philo *philos);
 int		clean_all(t_data *data, t_table *table, t_philo *philos);
-int 	death_monitoring(t_philo *philo);
+int		death_monitoring(t_philo *philo);
+int		take_forks(t_philo *philo);
+int		check_meals(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 20:46:50 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/22 17:33:01 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:31:46 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,3 @@ t_philo	*philo_init(t_data *data, t_table *table)
 	}
 	return (philos);
 }
-
-

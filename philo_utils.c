@@ -6,13 +6,11 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:04:14 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/22 17:31:29 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:18:10 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-
 
 long	get_time_stamp(void)
 {
@@ -27,9 +25,9 @@ long	get_time_stamp(void)
 void	print_log(t_philo *philo, char *str)
 {
 	int	ms;
-	
-	if(is_dead(philo))
-		return;
+
+	if (is_dead(philo))
+		return ;
 	pthread_mutex_lock(&philo->table->print_mutex);
 	ms = (get_time_stamp()) - (philo->table->start_time);
 	printf("%i %i %s\n", ms, philo->id, str);

@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:04:14 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/22 16:50:04 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:34:46 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,3 @@ int	main(int argc, char **argv)
 	clean_all(data, table, philos);
 	return (0);
 }
-
-// number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]

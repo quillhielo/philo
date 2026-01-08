@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:46:14 by acarbajo          #+#    #+#             */
-/*   Updated: 2025/12/17 21:10:19 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/08 14:16:44 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	clean_table(t_table *table)
 	free(table);
 	return (0);
 }
+
 int	clean_philos(t_philo *philos)
 {
 	if (philos->table)
@@ -46,6 +47,7 @@ int	clean_philos(t_philo *philos)
 	free(philos);
 	return (0);
 }
+
 int	clean_all(t_data *data, t_table *table, t_philo *philos)
 {
 	if (philos)
@@ -61,4 +63,3 @@ int	clean_all(t_data *data, t_table *table, t_philo *philos)
 	}
 	return (0);
 }
-

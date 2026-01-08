@@ -1,9 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_monitoring.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/08 15:35:55 by acarbajo          #+#    #+#             */
+/*   Updated: 2026/01/08 17:13:31 by acarbajo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
 
-int death_monitoring(t_philo *philo)
+int	death_monitoring(t_philo *philo)
 {
-	int	state;
+	int		state;
 	long	current_ms;
 
 	pthread_mutex_lock(&philo->table->death_mutex);
@@ -27,7 +38,7 @@ int death_monitoring(t_philo *philo)
 
 int	is_dead(t_philo *philo)
 {
-	int	state;
+	int		state;
 	long	current_ms;
 
 	pthread_mutex_lock(&philo->table->death_mutex);
@@ -46,35 +57,42 @@ int	is_dead(t_philo *philo)
 	return (state);
 }
 
+int	check_meals(t_philo *philos)
+{
+	pthread_mutex_lock(&philos->table->meal_mutex);
+	if (philos->meals_eaten < philos->data->must_eat)
+	{
+		pthread_mutex_unlock(&philos->table->meal_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philos->table->meal_mutex);
+	return (1);
+}
+
 void	*monitoring(void *arg)
 {
 	t_philo	*philos;
 	int		i;
-    int     all_ate;
+	int		all_ate;
 
 	philos = (t_philo *)arg;
 	while (1)
 	{
 		i = 0;
-        all_ate = 1;
+		all_ate = 1;
 		while (i < philos->data->n_philos)
 		{
 			if (death_monitoring(&philos[i]))
 				return (NULL);
 			if (philos->data->must_eat != 0)
-            {
-                pthread_mutex_lock(&philos->table->meal_mutex);
-                if (philos[i].meals_eaten < philos->data->must_eat)
-                    all_ate = 0;
-                pthread_mutex_unlock(&philos->table->meal_mutex);
-            }
+				all_ate = check_meals(&philos[i]);
 			i++;
 		}
-        if (philos->data->must_eat != 0 && all_ate)
-        {
-            philos->table->all_ate = 1;
-            return (NULL);
-        }
+		if (philos->data->must_eat != 0 && all_ate)
+		{
+			philos->table->all_ate = 1;
+			return (NULL);
+		}
 		usleep(500);
 	}
 }
