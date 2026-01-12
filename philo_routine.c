@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:53:42 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/08 17:31:19 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:50:51 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	take_forks(t_philo *philo)
 
 int	eat(t_philo *philo)
 {
+	if (is_full(philo))
+		return (0);
 	if (!take_forks(philo))
 		return (0);
 	pthread_mutex_lock(&philo->table->meal_mutex);
@@ -70,17 +72,16 @@ void	*routine(void *arg)
 	philo->last_meal = philo->table->start_time;
 	if (philo->id % 2 == 0)
 		usleep(2000);
-	while (!is_dead(philo) && !philo->table->all_ate)
+	while (!is_dead(philo) && !philo->table->full_philos)
 	{
 		print_log(philo, "is thinking");
-		if (is_dead(philo) || philo->table->all_ate)
+		if (is_dead(philo) || philo->table->full_philos)
 			return (0);
 		if (!eat(philo))
 			break ;
-		if (philo->data->must_eat != 0
-			&& philo->meals_eaten == philo->data->must_eat)
+		if (is_full(philo))
 			return (0);
-		if (is_dead(philo) || philo->table->all_ate)
+		if (is_dead(philo) || philo->table->full_philos)
 			return (0);
 		print_log(philo, "is sleeping");
 		active_sleep(philo->data->time_to_sleep, philo);

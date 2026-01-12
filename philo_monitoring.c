@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:35:55 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/08 17:13:31 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:30:29 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,16 +57,17 @@ int	is_dead(t_philo *philo)
 	return (state);
 }
 
-int	check_meals(t_philo *philos)
+int	is_full(t_philo *philo)
 {
-	pthread_mutex_lock(&philos->table->meal_mutex);
-	if (philos->meals_eaten < philos->data->must_eat)
+	pthread_mutex_lock(&philo->table->meal_mutex);
+	if (philo->data->must_eat != 0
+		&& philo->meals_eaten == philo->data->must_eat)
 	{
-		pthread_mutex_unlock(&philos->table->meal_mutex);
-		return (0);
+		pthread_mutex_unlock(&philo->table->meal_mutex);
+		return (1);
 	}
-	pthread_mutex_unlock(&philos->table->meal_mutex);
-	return (1);
+	pthread_mutex_unlock(&philo->table->meal_mutex);
+	return (0);
 }
 
 void	*monitoring(void *arg)
@@ -82,17 +83,16 @@ void	*monitoring(void *arg)
 		all_ate = 1;
 		while (i < philos->data->n_philos)
 		{
-			if (death_monitoring(&philos[i]))
-				return (NULL);
-			if (philos->data->must_eat != 0)
-				all_ate = check_meals(&philos[i]);
+			if (!is_full(&philos[i]))
+			{
+				if (death_monitoring(&philos[i]))
+					return (NULL);
+				all_ate = 0;
+			}
 			i++;
 		}
 		if (philos->data->must_eat != 0 && all_ate)
-		{
-			philos->table->all_ate = 1;
-			return (NULL);
-		}
+			return (philos->table->full_philos = 1, NULL);
 		usleep(500);
 	}
 }

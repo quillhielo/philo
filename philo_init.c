@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 20:46:50 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/08 15:31:46 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/12 19:52:26 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,13 @@ t_table	*table_init(t_data *data)
 		i++;
 	}
 	table->dead = 0;
-	table->all_ate = 0;
+	table->full_philos = 0;
 	table->full_table = 0;
 	pthread_mutex_init(&table->death_mutex, NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
 	pthread_mutex_init(&table->meal_mutex, NULL);
 	table->start_time = get_time_stamp();
+	table->full_philos = 0;
 	return (table);
 }
 

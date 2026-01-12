@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/08 17:15:04 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/01/12 20:25:35 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_table
 {
 	long			n_philos;
 	int				dead;
-	int				all_ate;
+	int				full_philos;
 	int				full_table;
 	pthread_t		monitor_thread;
 	pthread_mutex_t	death_mutex;
@@ -79,6 +79,6 @@ int		clean_philos(t_philo *philos);
 int		clean_all(t_data *data, t_table *table, t_philo *philos);
 int		death_monitoring(t_philo *philo);
 int		take_forks(t_philo *philo);
-int		check_meals(t_philo *philo);
+int		is_full(t_philo *philo);
 
 #endif

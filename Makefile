@@ -6,7 +6,7 @@
 #    By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/29 19:18:03 by acarbajo          #+#    #+#              #
-#    Updated: 2025/12/17 20:19:28 by acarbajo         ###   ########.fr        #
+#    Updated: 2026/01/12 18:20:08 by acarbajo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ CFLAGS = -Wall -Wextra -Werror
 
 OBJDIR = objs
 
-SRC = main.c philo_parser.c philo_init.c philo_utils.c philo_utils_exit.c philo_routine.c philo_monitoring.c
+SRC = main.c philo_parser.c philo_init.c philo_utils.c philo_utils_exit.c \
+		philo_routine.c philo_monitoring.c
 
 OBJ = $(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
