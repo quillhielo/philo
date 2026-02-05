@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/12 20:25:35 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/02/05 22:11:23 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ typedef struct s_table
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	full_table_mutex;
+	pthread_mutex_t	start_time_mutex;
 	pthread_mutex_t	*fork;
 	long			start_time;
 }	t_table;
@@ -80,5 +82,7 @@ int		clean_all(t_data *data, t_table *table, t_philo *philos);
 int		death_monitoring(t_philo *philo);
 int		take_forks(t_philo *philo);
 int		is_full(t_philo *philo);
+int		is_full_table(t_philo *philo);
+
 
 #endif

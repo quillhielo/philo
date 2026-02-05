@@ -6,7 +6,7 @@
 #    By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/29 19:18:03 by acarbajo          #+#    #+#              #
-#    Updated: 2026/01/12 18:20:08 by acarbajo         ###   ########.fr        #
+#    Updated: 2026/02/05 21:56:28 by acarbajo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,10 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=thread
+
+LDFLAGS = -fsanitize=thread
+
 
 OBJDIR = objs
 
@@ -30,10 +33,10 @@ $(OBJDIR):
 
 
 $(OBJDIR)/%.o: %.c philo.h
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS)  -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $(NAME)
 clean:
 	rm -rf $(OBJDIR)
 

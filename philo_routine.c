@@ -6,7 +6,7 @@
 /*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:53:42 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/12 20:50:51 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/02/05 22:20:54 by acarbajo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,34 @@ void	active_sleep(long duration_ms, t_philo *philo)
 	while (!is_dead(philo) && get_time_stamp() - ms_init < duration_ms)
 		usleep(500);
 }
+int	is_full_table(t_philo	*philo)
+{
+	pthread_mutex_lock(&philo->table->full_table_mutex);
+	if(!philo->table->full_table)
+	{
+		pthread_mutex_unlock(&philo->table->full_table_mutex);
+		return (0);
+	}
+	pthread_mutex_unlock(&philo->table->full_table_mutex);
+	return (1);
+}
+void	get_init_meal(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->meal_mutex);
+	pthread_mutex_lock(&philo->table->start_time_mutex);
+	philo->last_meal = philo->table->start_time;
+	pthread_mutex_unlock(&philo->table->meal_mutex);
+	pthread_mutex_unlock(&philo->table->start_time_mutex);
+}
 
 void	*routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (!philo->table->full_table)
+	while (!is_full_table(philo))
 		usleep(500);
-	philo->last_meal = philo->table->start_time;
+	get_init_meal(philo);
 	if (philo->id % 2 == 0)
 		usleep(2000);
 	while (!is_dead(philo) && !philo->table->full_philos)
