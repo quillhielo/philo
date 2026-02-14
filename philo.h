@@ -6,7 +6,7 @@
 /*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/02/14 14:34:38 by quill            ###   ########.fr       */
+/*   Updated: 2026/02/14 18:00:18 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,5 @@ int		death_monitoring(t_philo *philo);
 int		take_forks(t_philo *philo);
 int		is_full(t_philo *philo);
 int		is_full_philos(t_philo *philo);
-
 
 #endif

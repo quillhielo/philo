@@ -6,7 +6,7 @@
 /*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:35:55 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/02/14 17:31:05 by quill            ###   ########.fr       */
+/*   Updated: 2026/02/14 18:05:47 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int	death_monitoring(t_philo *philo)
 		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_mutex);
 		pthread_mutex_lock(&philo->table->print_mutex);
-		printf("%li %i died\n", (get_time_stamp()) - (philo->table->start_time), philo->id);
+		printf("%li %i died\n",
+			(get_time_stamp()) - (philo->table->start_time), philo->id);
 		pthread_mutex_unlock(&philo->table->print_mutex);
 		return (1);
 	}
@@ -61,6 +62,13 @@ int	is_full(t_philo *philo)
 	return (0);
 }
 
+int	set_full_philos(t_table *table)
+{
+	pthread_mutex_lock(&philos->table->full_philos_mutex);
+	philos->table->full_philos = 1;
+	pthread_mutex_unlock(&philos->table->full_philos_mutex);
+}
+
 void	*monitoring(void *arg)
 {
 	t_philo	*philos;
@@ -84,10 +92,7 @@ void	*monitoring(void *arg)
 		}
 		if (philos->data->must_eat != 0 && all_ate)
 		{
-			pthread_mutex_lock(&philos->table->full_philos_mutex);
-			philos->table->full_philos = 1;
-			pthread_mutex_unlock(&philos->table->full_philos_mutex);
-			return (NULL);
+			return (set_full_philos(philos->table), NULL);
 		}
 		usleep(1000);
 	}

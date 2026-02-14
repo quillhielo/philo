@@ -6,7 +6,7 @@
 /*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:04:14 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/02/14 14:18:44 by quill            ###   ########.fr       */
+/*   Updated: 2026/02/14 18:01:00 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ long	get_time_stamp(void)
 void	print_log(t_philo *philo, char *str)
 {
 	int	ms;
-	
+
 	if (is_dead(philo))
 		return ;
 	pthread_mutex_lock(&philo->table->print_mutex);
@@ -63,6 +63,7 @@ void	join_threads(t_philo *philos)
 	}
 	pthread_join(philos->table->monitor_thread, NULL);
 }
+
 int	is_full_philos(t_philo *philos)
 {
 	pthread_mutex_lock(&philos->table->full_philos_mutex);
