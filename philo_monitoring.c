@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_monitoring.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:35:55 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/12 20:30:29 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/02/14 17:31:05 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,44 +17,35 @@ int	death_monitoring(t_philo *philo)
 	int		state;
 	long	current_ms;
 
-	pthread_mutex_lock(&philo->table->death_mutex);
 	pthread_mutex_lock(&philo->table->meal_mutex);
 	current_ms = get_time_stamp() - philo->last_meal;
-	if (current_ms >= philo->data->time_to_die)
+	pthread_mutex_unlock(&philo->table->meal_mutex);
+	if (current_ms > philo->data->time_to_die)
 	{
+		pthread_mutex_lock(&philo->table->death_mutex);
 		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_mutex);
-		pthread_mutex_unlock(&philo->table->meal_mutex);
 		pthread_mutex_lock(&philo->table->print_mutex);
-		printf("%li %i died\n", current_ms, philo->id);
+		printf("%li %i died\n", (get_time_stamp()) - (philo->table->start_time), philo->id);
 		pthread_mutex_unlock(&philo->table->print_mutex);
 		return (1);
 	}
+	pthread_mutex_lock(&philo->table->death_mutex);
 	state = philo->table->dead;
 	pthread_mutex_unlock(&philo->table->death_mutex);
-	pthread_mutex_unlock(&philo->table->meal_mutex);
 	return (state);
 }
 
 int	is_dead(t_philo *philo)
 {
-	int		state;
-	long	current_ms;
-
 	pthread_mutex_lock(&philo->table->death_mutex);
-	pthread_mutex_lock(&philo->table->meal_mutex);
-	current_ms = get_time_stamp() - philo->last_meal;
-	if (current_ms >= philo->data->time_to_die)
+	if (philo->table->dead == 1)
 	{
-		philo->table->dead = 1;
 		pthread_mutex_unlock(&philo->table->death_mutex);
-		pthread_mutex_unlock(&philo->table->meal_mutex);
 		return (1);
 	}
-	state = philo->table->dead;
 	pthread_mutex_unlock(&philo->table->death_mutex);
-	pthread_mutex_unlock(&philo->table->meal_mutex);
-	return (state);
+	return (0);
 }
 
 int	is_full(t_philo *philo)
@@ -92,7 +83,12 @@ void	*monitoring(void *arg)
 			i++;
 		}
 		if (philos->data->must_eat != 0 && all_ate)
-			return (philos->table->full_philos = 1, NULL);
-		usleep(500);
+		{
+			pthread_mutex_lock(&philos->table->full_philos_mutex);
+			philos->table->full_philos = 1;
+			pthread_mutex_unlock(&philos->table->full_philos_mutex);
+			return (NULL);
+		}
+		usleep(1000);
 	}
 }

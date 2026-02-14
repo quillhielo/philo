@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/17 20:46:50 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/01/12 19:52:26 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/02/14 17:22:52 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ t_table	*table_init(t_data *data)
 	}
 	table->dead = 0;
 	table->full_philos = 0;
-	table->full_table = 0;
 	pthread_mutex_init(&table->death_mutex, NULL);
 	pthread_mutex_init(&table->print_mutex, NULL);
 	pthread_mutex_init(&table->meal_mutex, NULL);
+	pthread_mutex_init(&table->full_philos_mutex, NULL);
 	table->start_time = get_time_stamp();
 	table->full_philos = 0;
 	return (table);
@@ -52,6 +52,16 @@ t_philo	fill_philos(t_table *table, int id, t_data *data)
 	philo.has_eaten = 0;
 	philo.last_meal = table->start_time;
 	philo.meals_eaten = 0;
+	if (philo.id % 2 == 0)
+	{
+		philo.first_fork = philo.left_fork;
+		philo.second_fork = philo.right_fork;
+	}
+	else
+	{
+		philo.first_fork = philo.right_fork;
+		philo.second_fork = philo.left_fork;
+	}
 	return (philo);
 }
 

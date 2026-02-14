@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+         #
+#    By: quill <quill@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/29 19:18:03 by acarbajo          #+#    #+#              #
-#    Updated: 2026/02/05 21:56:28 by acarbajo         ###   ########.fr        #
+#    Updated: 2026/02/14 17:35:12 by quill            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,10 +14,9 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror  -g -fsanitize=thread
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 
-LDFLAGS = -fsanitize=thread
-
+LDFLAGS = -lpthread
 
 OBJDIR = objs
 

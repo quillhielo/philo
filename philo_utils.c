@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 20:04:14 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/02/05 22:12:29 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/02/14 14:18:44 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ long	get_time_stamp(void)
 void	print_log(t_philo *philo, char *str)
 {
 	int	ms;
-
+	
 	if (is_dead(philo))
 		return ;
 	pthread_mutex_lock(&philo->table->print_mutex);
@@ -39,18 +39,16 @@ void	create_threads(t_philo *philos)
 	int	i;
 
 	i = 0;
+	philos->table->start_time = get_time_stamp();
 	while (i < philos->data->n_philos)
 	{
+		pthread_mutex_lock(&philos->table->meal_mutex);
+		philos[i].last_meal = get_time_stamp();
+		pthread_mutex_unlock(&philos->table->meal_mutex);
 		pthread_create(&philos[i].thread, NULL, routine, &philos[i]);
 		i++;
 	}
 	pthread_create(&philos->table->monitor_thread, NULL, monitoring, philos);
-	pthread_mutex_lock(&philos->table->start_time_mutex);
-	philos->table->start_time = get_time_stamp();
-	pthread_mutex_unlock(&philos->table->start_time_mutex);
-	pthread_mutex_lock(&philos->table->full_table_mutex);
-	philos->table->full_table = 1;
-	pthread_mutex_unlock(&philos->table->full_table_mutex);
 }
 
 void	join_threads(t_philo *philos)
@@ -64,4 +62,15 @@ void	join_threads(t_philo *philos)
 		i++;
 	}
 	pthread_join(philos->table->monitor_thread, NULL);
+}
+int	is_full_philos(t_philo *philos)
+{
+	pthread_mutex_lock(&philos->table->full_philos_mutex);
+	if (philos->table->full_philos)
+	{
+		pthread_mutex_unlock(&philos->table->full_philos_mutex);
+		return (1);
+	}
+	pthread_mutex_unlock(&philos->table->full_philos_mutex);
+	return (0);
 }

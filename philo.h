@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: acarbajo <acarbajo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 17:39:09 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/02/05 22:11:23 by acarbajo         ###   ########.fr       */
+/*   Updated: 2026/02/14 14:34:38 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,13 @@ typedef struct s_table
 	long			n_philos;
 	int				dead;
 	int				full_philos;
-	int				full_table;
 	pthread_t		monitor_thread;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	meal_mutex;
-	pthread_mutex_t	full_table_mutex;
 	pthread_mutex_t	start_time_mutex;
 	pthread_mutex_t	*fork;
+	pthread_mutex_t	full_philos_mutex;
 	long			start_time;
 }	t_table;
 
@@ -54,6 +53,8 @@ typedef struct s_philo
 	pthread_t	thread;
 	int			left_fork;
 	int			right_fork;
+	int			first_fork;
+	int			second_fork;
 	long		last_meal;
 	long		meals_eaten;
 	t_data		*data;
@@ -82,7 +83,7 @@ int		clean_all(t_data *data, t_table *table, t_philo *philos);
 int		death_monitoring(t_philo *philo);
 int		take_forks(t_philo *philo);
 int		is_full(t_philo *philo);
-int		is_full_table(t_philo *philo);
+int		is_full_philos(t_philo *philo);
 
 
 #endif
