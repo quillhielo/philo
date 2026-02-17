@@ -6,7 +6,7 @@
 /*   By: quill <quill@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:35:55 by acarbajo          #+#    #+#             */
-/*   Updated: 2026/02/14 18:05:47 by quill            ###   ########.fr       */
+/*   Updated: 2026/02/14 18:19:47 by quill            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ int	is_full(t_philo *philo)
 	return (0);
 }
 
-int	set_full_philos(t_table *table)
+void	set_full_philos(t_table *table)
 {
-	pthread_mutex_lock(&philos->table->full_philos_mutex);
-	philos->table->full_philos = 1;
-	pthread_mutex_unlock(&philos->table->full_philos_mutex);
+	pthread_mutex_lock(&table->full_philos_mutex);
+	table->full_philos = 1;
+	pthread_mutex_unlock(&table->full_philos_mutex);
 }
 
 void	*monitoring(void *arg)
